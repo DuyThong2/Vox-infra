@@ -1,0 +1,21 @@
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: general
+spec:
+  amiFamily: AL2023
+  instanceProfile: vox-eks-node-instance-profile
+  # ap-southeast-1 EKS 1.36 AL2023 standard AMI, read from AWS SSM on 2026-07-19:
+  # /aws/service/eks/optimized-ami/1.36/amazon-linux-2023/x86_64/standard/recommended/image_id
+  amiSelectorTerms:
+    - id: ami-0ff0cb52c2d324a8c
+  subnetSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: vox-eks
+  securityGroupSelectorTerms:
+    - tags:
+        karpenter.sh/discovery: vox-eks
+  tags:
+    karpenter.sh/discovery: vox-eks
+    Project: voxenta
+

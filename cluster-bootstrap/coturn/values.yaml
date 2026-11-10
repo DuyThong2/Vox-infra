@@ -1,0 +1,62 @@
+# Same values as vox-helm/charts/coturn/values.yaml (keep both in sync — this is
+# the manual first-bootstrap install of the exact same chart that ArgoCD later
+# manages via vox-helm/argocd/apps/coturn-app.yaml). Install with:
+# helm upgrade --install coturn ./vox-helm/charts/coturn -n coturn --create-namespace -f infrastructure/cluster-bootstrap/coturn/values.yaml
+#
+# Chart: real, published pschichtel/helm-charts "coturn" 1.8.0 (see
+# vox-helm/charts/coturn/Chart.yaml for why this one, not small-hack/coturn-chart
+# or jaconi/coturn).
+coturn:
+  # hostNetwork migration (2026-07-20) -- see the long comment on these 2 keys
+  # in vox-helm/charts/coturn/values.yaml. MUST be nested inside `coturn:`
+  # (not a top-level sibling) or it silently never reaches the subchart.
+  hostNetwork: true
+  nodeSelector:
+    eks.amazonaws.com/nodegroup: vox-eks-static-ng
+
+  service:
+    type: LoadBalancer
+    externalTrafficPolicy: Local
+    separateRelayService: false
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-type: nlb
+      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+      service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+
+  coturn:
+    realm: turn.voxenta.net
+    # Elastic IP manually associated with the static node's primary ENI --
+    # see infrastructure/infrastructureBE/main.tf's aws_eip.coturn. Update
+    # here (and vox-helm/charts/coturn/values.yaml, and vox/coturn's
+    # TURN_URL secret) if the static node is ever replaced.
+    externalIp: "52.76.15.255"
+    ports:
+      # See the long comment on these 2 keys in vox-helm/charts/coturn/values.yaml
+      # for why: TCP/UDP control ports still go through the Service/NLB
+      # (unchanged by the hostNetwork migration -- only relay moved off it).
+      tcpService: 3479
+      # Full IANA ephemeral range -- no longer NLB-listener-constrained now
+      # that relay binds via hostNetwork + a Security Group rule instead
+      # (infrastructure/infrastructureBE/main.tf's
+      # aws_security_group_rule.coturn_relay_hostnetwork).
+      relay:
+        min: 49152
+        max: 65535
+    staticUsers:
+      secretName: coturn-static-users
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+
+# MUST match the "TURN_USERNAME" value seeded into AWS Secrets Manager's
+# vox/coturn secret (runbook.md step 5.10 already uses this same literal "vox").
+turnUsername: vox
+
+externalSecret:
+  refreshInterval: 1h
+  secretStoreRef: aws-secrets-manager

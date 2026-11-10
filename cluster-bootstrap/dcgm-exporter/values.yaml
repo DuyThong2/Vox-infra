@@ -1,0 +1,14 @@
+nodeSelector:
+  karpenter.sh/nodepool: gpu
+
+tolerations:
+  - key: nvidia.com/gpu
+    operator: Equal
+    value: "true"
+    effect: NoSchedule
+
+serviceMonitor:
+  enabled: true
+  additionalLabels:
+    release: kube-prometheus-stack
+

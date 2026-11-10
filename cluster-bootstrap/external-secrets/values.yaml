@@ -1,0 +1,14 @@
+serviceAccount:
+  create: true
+  name: external-secrets
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::975049890010:role/vox-eks-external-secrets-irsa
+
+webhook:
+  serviceAccount:
+    create: true
+
+certController:
+  serviceAccount:
+    create: true
+

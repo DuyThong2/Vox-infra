@@ -1,0 +1,50 @@
+configs:
+  params:
+    server.insecure: false
+
+  # KHÔNG khai `secret.argocdServerAdminPassword` ở đây.
+  #
+  # Mật khẩu admin cố định giữa các lần dựng lại cụm, nhưng nó là CREDENTIAL nên phải
+  # đi qua Secrets Manager như mọi bí mật khác của dự án (vox/app, vox/database, ...),
+  # không viết thẳng vào file values. Ngay cả bcrypt hash cũng là thứ đem đi dò ngoại
+  # tuyến được, và để nó ở đây thì mỗi người đọc được repo/thư mục này là có bản để dò.
+  #
+  # Nguồn thật: secret `vox/argocd` (khoá ADMIN_PASSWORD_BCRYPT), được External Secrets
+  # ghép vào `argocd-secret` bằng externalsecret.yaml cạnh file này. Xem chú thích trong
+  # file đó để biết vì sao phải dùng creationPolicy: Merge chứ không phải Owner.
+  #
+  # Vì values không đặt mật khẩu, ArgoCD tự sinh một mật khẩu ngẫu nhiên lúc cài
+  # (`argocd-initial-admin-secret`); ExternalSecret ghi đè lên ngay sau đó. Đừng dùng
+  # giá trị trong secret khởi tạo -- nó chỉ sống được vài giây.
+
+server:
+  # NOTE: no `extraArgs: [--grpc-web]` here -- that flag doesn't exist on
+  # argocd-server v3.4.5 (confirmed real: `Error: unknown flag: --grpc-web`,
+  # server crash-looped on it during deploy). gRPC-Web handling is on by
+  # default in this version, no flag needed.
+  ingress:
+    enabled: true
+    ingressClassName: alb
+    hostname: argocd.voxenta.net
+    annotations:
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/target-type: ip
+      # server.insecure: false above means argocd-server terminates TLS itself
+      # (self-signed cert) -- ALB must speak HTTPS to the backend, not HTTP,
+      # or requests never reach the server.
+      alb.ingress.kubernetes.io/backend-protocol: HTTPS
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+      alb.ingress.kubernetes.io/ssl-redirect: "443"
+      # Same wildcard cert (*.voxenta.net) as vox/vox-streaming/agents -- ALB
+      # needs an explicit cert since auto-discovery only matches if exactly
+      # one ACM cert's SANs cover the host, and this shared ALB serves 4
+      # different subdomains off the same cert.
+      alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:ap-southeast-1:975049890010:certificate/ed1ba235-3c99-432e-a370-5ab0312a4d3a"
+      # Same shared ALB as vox/vox-streaming/agents (see their ingress.yaml) --
+      # one more HTTP host on the group costs nothing extra, no reason to
+      # spin up a second ALB just for this.
+      alb.ingress.kubernetes.io/group.name: vox-backend
+      # ArgoCD's own login screen (admin/<password>) still gates every
+      # request regardless of this Ingress -- this annotation set doesn't add
+      # or replace that, it only gets traffic to the door.
+

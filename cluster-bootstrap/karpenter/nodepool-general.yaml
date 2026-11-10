@@ -1,0 +1,67 @@
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: general
+spec:
+  # Sized for max ~2 nodes at the "xlarge" floor below (t3a.xlarge = 4 vCPU/
+  # 16GiB each -- 2 x 4 = 8 vCPU, 2 x 16 = 32GiB) -- same total budget as the
+  # earlier 4x "large" setup (t3a price scales linearly with size, so equal
+  # cost either way), but fewer nodes means less DaemonSet/kubelet overhead
+  # paid per node (kube-proxy, aws-node, ebs-csi-node... run on every node
+  # regardless of size) and more per-node headroom to absorb a pod's CPU
+  # spike (e.g. agents' cold-start load) without needing a whole new node.
+  limits:
+    cpu: "8"
+    memory: 32Gi
+  # WhenEmpty (đổi 2026-08-11 từ WhenEmptyOrUnderutilized): CHỈ xoá node đã rỗng hẳn
+  # (chỉ còn DaemonSet), không bao giờ đuổi pod đang chạy để dồn cho rẻ.
+  #
+  # Vì sao đổi: đo thật trong ~3 giờ, Karpenter xoá node 6 lần (4 lần lý do "Underutilized").
+  # Lần gần nhất nó đuổi 9 pod -- gồm Kafka + cả 3 database -- để tiết kiệm $0.19/giờ. Mỗi
+  # lần như vậy pod stateful phải gỡ ổ EBS rồi gắn sang node khác (thường kẹt Multi-Attach
+  # vài chục giây), kéo image, khởi động lại: 1-3 phút chết dịch vụ. Hệ quả dây chuyền đã
+  # thấy thật: vox-streaming CrashLoopBackOff vì mất Kafka, agents restart 5 lần vì mất
+  # Postgres. Một phiên thi đang chạy mà dính là hỏng.
+  #
+  # PDB KHÔNG cứu được chuyện này (Kafka/Postgres/Redis đều đã có PDB minAvailable=1): PDB
+  # chỉ giới hạn bao nhiêu pod bị đuổi CÙNG LÚC, không cấm đuổi -- replica đơn lẻ vẫn bị dời,
+  # chỉ là dời lần lượt.
+  #
+  # Đánh đổi đã biết: node còn đúng 1 pod cũng không bao giờ được thu hồi (pod không tự dời),
+  # nên dễ có 1 t3a.xlarge gần như rảnh vẫn chạy ~$0.19/giờ. Chấp nhận được vì cụm này bị
+  # destroy sau mỗi buổi test. Khi nào chạy production dài hạn thì cân nhắc "Balanced" --
+  # nó chấm điểm tiền-tiết-kiệm so với mức xáo trộn và bỏ qua các vụ lợi bất cập hại; hợp lý
+  # hơn về chi phí nhưng là heuristic, tài liệu không công bố ngưỡng, nên KHÔNG đảm bảo
+  # tuyệt đối là Kafka không bị dời.
+  #
+  # consolidateAfter vẫn bắt buộc (CRD đánh dấu -required-); với WhenEmpty nó có nghĩa là
+  # "node rỗng bao lâu thì xoá", và bộ đếm reset mỗi khi có pod thêm/bớt.
+  disruption:
+    consolidationPolicy: WhenEmpty
+    consolidateAfter: 2m
+  template:
+    metadata:
+      labels:
+        workload-tier: general
+    spec:
+      nodeClassRef:
+        group: karpenter.k8s.aws
+        kind: EC2NodeClass
+        name: general
+      requirements:
+        - key: karpenter.k8s.aws/instance-family
+          operator: In
+          values: ["t3", "t3a", "c5", "c6i"]
+        # Floor at "large" -- without this, Karpenter kept bin-packing onto
+        # many cheap t3a.small (2 vCPU) nodes instead of consolidating (8
+        # nodes x 2 vCPU hit the 16 vCPU cluster limit for real during
+        # deploy). Forcing fewer, bigger nodes is more cost-efficient in
+        # aggregate (less per-node overhead) and leaves headroom for agents'
+        # CPU-only YOLO workload (2-4 vCPU request) to actually schedule.
+        - key: karpenter.k8s.aws/instance-size
+          operator: In
+          values: ["xlarge"]
+        - key: karpenter.sh/capacity-type
+          operator: In
+          values: ["on-demand"]
+

@@ -1,0 +1,24 @@
+# Chart: nvdp/nvidia-device-plugin 0.19.3, checked with `helm show values` on 2026-07-19.
+# Time-slicing replicas must match vox-helm/charts/agents autoscaling.maxReplicas.
+config:
+  map:
+    time-slicing: |-
+      version: v1
+      sharing:
+        timeSlicing:
+          resources:
+            - name: nvidia.com/gpu
+              replicas: 4
+  default: time-slicing
+
+tolerations:
+  - key: CriticalAddonsOnly
+    operator: Exists
+  - key: nvidia.com/gpu
+    operator: Equal
+    value: "true"
+    effect: NoSchedule
+
+nodeSelector:
+  karpenter.sh/nodepool: gpu
+

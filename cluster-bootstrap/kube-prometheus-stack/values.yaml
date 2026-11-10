@@ -1,0 +1,28 @@
+alertmanager:
+  enabled: true
+
+grafana:
+  enabled: true
+  persistence:
+    enabled: true
+    type: sts
+    storageClassName: gp3
+    accessModes:
+      - ReadWriteOnce
+    size: 5Gi
+
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+    retention: 7d
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: gp3
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 20Gi
+

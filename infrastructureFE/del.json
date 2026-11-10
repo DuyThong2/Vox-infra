@@ -1,0 +1,245 @@
+{
+    "Objects":  [
+                    {
+                        "Key":  "assets/index-CCRx19VB.js",
+                        "VersionId":  "yTWZqk9e9pqC1LrJS5yAuzLYSl0JS.lS"
+                    },
+                    {
+                        "Key":  "assets/index-z5OvGDB7.css",
+                        "VersionId":  "jBvgZAJv_OBlKkokhVpLaVo.vb5wyGnA"
+                    },
+                    {
+                        "Key":  "assets/pdf-icon-qkPKKew8.png",
+                        "VersionId":  "wXDOeEm8h6xQ8317Ecmmv_.Ly6.tnve2"
+                    },
+                    {
+                        "Key":  "assets/video-icon-Bk01wDJ9.png",
+                        "VersionId":  "TwK_JeYFaDpxbfzSZecG_J.oRBg9Gr_b"
+                    },
+                    {
+                        "Key":  "favicon.png",
+                        "VersionId":  "vD8PYXoJNDH.2ZwnF02mnHbYSJOJylxJ"
+                    },
+                    {
+                        "Key":  "guide/cloth-bad1.jpg",
+                        "VersionId":  "bcv1mNd.vQplXxLMlitQQ_R3f_QV1HaT"
+                    },
+                    {
+                        "Key":  "guide/cloth-bad2.jpg",
+                        "VersionId":  "aL44D9OIrfFpfI5ytHIwV.DhCQq3_pTh"
+                    },
+                    {
+                        "Key":  "guide/cloth-good1.png",
+                        "VersionId":  "e4NmNpRl51pZhhgGgwRgCEYn7pnqN0Ag"
+                    },
+                    {
+                        "Key":  "guide/cloth-good2.jpg",
+                        "VersionId":  "0.ceMgJOugxeuwJ1sNSvGF3M.GCn1Pih"
+                    },
+                    {
+                        "Key":  "guide/model-bad.jpg",
+                        "VersionId":  "TC8deSClVFfDTF4ZOy5.iM7d3uCvYv7Z"
+                    },
+                    {
+                        "Key":  "guide/model-bad1.jpg",
+                        "VersionId":  "rZvtk_BdiJ3cH7n9J1HnV9yF2.ZMk9yP"
+                    },
+                    {
+                        "Key":  "guide/model-good.jpg",
+                        "VersionId":  "SJ5nG1ygpL4MbopcnN6s9MZBDA9Lgc55"
+                    },
+                    {
+                        "Key":  "images/aboutUs/we-are.jpg",
+                        "VersionId":  "TcAjMpREKdcC7yJUlNUz1zyLXR3aJ.Fw"
+                    },
+                    {
+                        "Key":  "images/accessories/day-chuyen-bac-dang-xoan.png",
+                        "VersionId":  "JeCoOfsW4PemQ.NYWBuA9kmFSGlbd_e0"
+                    },
+                    {
+                        "Key":  "images/accessories/day-chuyen-bac-mat-da-den-vuong.png",
+                        "VersionId":  "GF5Y9kFePmfxyt1h3DbBrQmQA051oa3Q"
+                    },
+                    {
+                        "Key":  "images/accessories/day-chuyen-bac-mat-rang-soi.png",
+                        "VersionId":  "kRwKZeoEKDChAlxnktdQwy0a5kwk0KiU"
+                    },
+                    {
+                        "Key":  "images/accessories/day-chuyen-bac-mat-tru-tron.png",
+                        "VersionId":  "AzA1B4vr0_1fDHjdCOtY9dbMbKKWhb4U"
+                    },
+                    {
+                        "Key":  "images/accessories/day-chuyen-bac-sao-bon-canh.png",
+                        "VersionId":  "Buf9S3nvV0LgwgN64HZ.nQPKMglGwt26"
+                    },
+                    {
+                        "Key":  "images/accessories/nhan-bac-mat-chu-nhat.png",
+                        "VersionId":  "4Hj42oAG23ejH4SKn9yOt2.0CE.XeNCn"
+                    },
+                    {
+                        "Key":  "images/accessories/vong-co-day-vang.png",
+                        "VersionId":  "rxzs6sw4R.aKjnxupKyWZSeXUoTmPRu7"
+                    },
+                    {
+                        "Key":  "images/accessories/vong-tay-bac-song-song.png",
+                        "VersionId":  "iI4Myg1jXvZAiH1aKMKL23_wKx9LslYu"
+                    },
+                    {
+                        "Key":  "images/accessories/vong-tay-bac.png",
+                        "VersionId":  "V1pP6JBlsyWy9.yogd71TmAVjfMAyvpK"
+                    },
+                    {
+                        "Key":  "images/accessories/vong-tay-cuff-bac-ban-nho.png",
+                        "VersionId":  "qQbYuQdCsJQ52RF6K1FeYhtZCHHE.QEy"
+                    },
+                    {
+                        "Key":  "images/banners/accessories-banner.png",
+                        "VersionId":  "gmkYc7rulkbqFPYF0PtBIGx1ljjndS3h"
+                    },
+                    {
+                        "Key":  "images/banners/main-page-banner.png",
+                        "VersionId":  "eJeMChh8jYmtePnc.Mswm9Gw8LNDTsQm"
+                    },
+                    {
+                        "Key":  "images/banners/pants-banner.png",
+                        "VersionId":  "yV_RZ9H28ekALE.Z5agL8p0z6Qk0Gzir"
+                    },
+                    {
+                        "Key":  "images/banners/shirts-banner.png",
+                        "VersionId":  "B8alyWGXxFb.3gngXm_eFG3Z9nlsT2y8"
+                    },
+                    {
+                        "Key":  "images/logos/Facebook_Messenger_logo_2020.svg.webp",
+                        "VersionId":  "u3551rijvh_Z0RYN9bkbQwuy8AX.VPox"
+                    },
+                    {
+                        "Key":  "images/logos/Icon-VNPAY-QR.webp",
+                        "VersionId":  "nP9NOSs9tFF5Bu2gFXryCCHlsS5i.HMp"
+                    },
+                    {
+                        "Key":  "images/logos/Icon_of_Zalo.svg.png",
+                        "VersionId":  "XD5uvQWx3.PRCL4ddtwFHi6oLf54CcBS"
+                    },
+                    {
+                        "Key":  "images/logos/MoMo_Logo.png",
+                        "VersionId":  "YQ_mwMdsg1iLDAo7az.qgmdjnhwVMncf"
+                    },
+                    {
+                        "Key":  "images/logos/VietQr-Icon.png",
+                        "VersionId":  "52hKFgVmWdlJaizbjA4_WPNm7rvxjxMu"
+                    },
+                    {
+                        "Key":  "images/logos/iconZaloPay.png",
+                        "VersionId":  "swxFDTNPclZqT.Gt.pvQtAZLOk1ihJtD"
+                    },
+                    {
+                        "Key":  "images/logos/logo-instagram.avif",
+                        "VersionId":  "OqBsAUJodn4aMMnnBR1rxBgQTmFufUrd"
+                    },
+                    {
+                        "Key":  "images/logos/viren_logo.png",
+                        "VersionId":  "ooZYRDbDVh.Wxgx6nV77zhRxOroiwflh"
+                    },
+                    {
+                        "Key":  "images/logos/viren_logo1.png",
+                        "VersionId":  "4N_58HPwdfqGHaPJ63i5665bZLCLZX7X"
+                    },
+                    {
+                        "Key":  "images/pants/Rectangle 31.png",
+                        "VersionId":  "Ol4Cbe.ASf35A9qSJLdkv1JhWXJwaxa_"
+                    },
+                    {
+                        "Key":  "images/pants/Rectangle 35.png",
+                        "VersionId":  "5dHFcAtuHmH4IDyJyJwEEIoK47zXD.i1"
+                    },
+                    {
+                        "Key":  "images/pants/quan-tay-basic-fit.png",
+                        "VersionId":  "uRDcF_mX7OUdAIG91vou6bvJHb_Bkkx0"
+                    },
+                    {
+                        "Key":  "images/pants/quan-tay-classic1.png",
+                        "VersionId":  "ZHbCjKe8u0egnBPIruuNAMXElLMX8CUO"
+                    },
+                    {
+                        "Key":  "images/pants/quan-tay-dang-suong-high.png",
+                        "VersionId":  "OIkLb8QncEeG5.tABb_vyAo3QbkauarQ"
+                    },
+                    {
+                        "Key":  "images/pants/quan-tay-dang-suong.png",
+                        "VersionId":  "bymgIfywdXuduukN1SwaDLjmjqfJ5UM4"
+                    },
+                    {
+                        "Key":  "images/pants/quan-tay-linen.png",
+                        "VersionId":  "QJRybdYseJ5P2pRdRXmrhevANFs.4UbK"
+                    },
+                    {
+                        "Key":  "images/pants/quan-tay-ong-rong-kaki.png",
+                        "VersionId":  "lQuWOcZfDGLnSyuiRaz83_uuEkLobJLP"
+                    },
+                    {
+                        "Key":  "images/pants/quan-tay-ong-rong.png",
+                        "VersionId":  "SwvSdr6C1u_PC9Xk9lRieKSVr3wi_rdR"
+                    },
+                    {
+                        "Key":  "images/pants/quan-tay-xep-ly-ong-rong.png",
+                        "VersionId":  "4Ld2M1vVoAi7m0myw1sQpQVxDH2VXLzA"
+                    },
+                    {
+                        "Key":  "images/placeholder-image.jpg",
+                        "VersionId":  "KPkJRsgZWz5Sp6DLDSf_iHdId4cag0Zw"
+                    },
+                    {
+                        "Key":  "images/shirts/ao-xanh.png",
+                        "VersionId":  "KXHYR.8louLDn8PxRuOf2O4sLPRpbL1."
+                    },
+                    {
+                        "Key":  "images/shirts/cardigan_dang_dai.png",
+                        "VersionId":  "ZTyy67vAYWR8xaqXA3PR5kpuS6HR1ae_"
+                    },
+                    {
+                        "Key":  "images/shirts/len_co_mo.png",
+                        "VersionId":  "TmeYlVy5qqthyuf8vcjnGp1BnhXs9vvv"
+                    },
+                    {
+                        "Key":  "images/shirts/len_co_tim_ovesize.png",
+                        "VersionId":  "xToczuLuA4mcmDGFQpiBls7OXfHJmMtX"
+                    },
+                    {
+                        "Key":  "images/shirts/mid-banner1.png",
+                        "VersionId":  "TyIG9pkhFywwzVX6IkNoLq9ONkj9wZRS"
+                    },
+                    {
+                        "Key":  "images/shirts/mid-banner2.png",
+                        "VersionId":  "n4.nrgpqLQoN9YuiQ9Asj1fDZGluhYya"
+                    },
+                    {
+                        "Key":  "images/shirts/somi_dai_tay.png",
+                        "VersionId":  "uEPtYhnmuWVPa5S4oensLZokyS54BsRK"
+                    },
+                    {
+                        "Key":  "images/shirts/somi_len_dan_luoi.png",
+                        "VersionId":  "ukWQOXB5a6YDDfaDhQNT81pKz2l55_VD"
+                    },
+                    {
+                        "Key":  "images/shirts/somi_ngan_tay.png",
+                        "VersionId":  "vkiUWQB04RbPe3qq5Usfo.BFfi1kxgct"
+                    },
+                    {
+                        "Key":  "images/shirts/somi_tui_hop_dai_tay.png",
+                        "VersionId":  "itKRaUUYi5r37TBeFeKs6BAR2gVb2JHL"
+                    },
+                    {
+                        "Key":  "images/shirts/thun_trang_basic.png",
+                        "VersionId":  "A1m1y2NccYEP3LZzHnQTtxx92aKSyQXA"
+                    },
+                    {
+                        "Key":  "index.html",
+                        "VersionId":  "Mag4cXfKGzeGye0FTcUZzHXQbztR3FVT"
+                    },
+                    {
+                        "Key":  "vite.svg",
+                        "VersionId":  ".db_kw3GFfBdcXRzqEh4UE_T0drvmycY"
+                    }
+                ],
+    "Quiet":  true
+}

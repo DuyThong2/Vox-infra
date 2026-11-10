@@ -1,0 +1,20 @@
+# Chart: prometheus-community/prometheus-adapter 5.3.0, checked with `helm show values` on 2026-07-19.
+prometheus:
+  url: http://kube-prometheus-stack-prometheus.monitoring.svc
+  port: 9090
+
+rules:
+  default: true
+  custom:
+    - seriesQuery: 'DCGM_FI_DEV_GPU_UTIL{namespace="vox-agents",pod!=""}'
+      resources:
+        overrides:
+          namespace:
+            resource: namespace
+          pod:
+            resource: pod
+      name:
+        matches: "DCGM_FI_DEV_GPU_UTIL"
+        as: "agents_gpu_utilization"
+      metricsQuery: 'avg(<<.Series>>{<<.LabelMatchers>>}) by (<<.GroupBy>>)'
+

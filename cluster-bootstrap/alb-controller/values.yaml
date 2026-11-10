@@ -1,0 +1,10 @@
+clusterName: vox-eks
+region: ap-southeast-1
+vpcId: vpc-02e444bc5b164441e
+
+serviceAccount:
+  create: false
+  name: aws-load-balancer-controller
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::975049890010:role/vox-eks-alb-controller-irsa
+

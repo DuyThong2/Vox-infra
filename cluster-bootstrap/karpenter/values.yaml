@@ -1,0 +1,17 @@
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::975049890010:role/vox-eks-karpenter-irsa
+
+settings:
+  clusterName: vox-eks
+  clusterEndpoint: https://ACB716546434F0CE014F831ED838F2CB.gr7.ap-southeast-1.eks.amazonaws.com
+
+controller:
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: 1
+      memory: 1Gi
+

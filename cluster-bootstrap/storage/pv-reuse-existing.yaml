@@ -1,0 +1,135 @@
+# Gắn lại 4 ổ EBS còn sót từ lần destroy trước, thay vì để cấp động ổ mới và mất dữ liệu.
+#
+# VÌ SAO CẦN FILE NÀY: chart của dự án dùng dynamic provisioning thuần, không có
+# static-PV rebinding. Sau `playbook-destroy.md` mà chọn GIỮ EBS thì các ổ cũ nằm lại ở
+# trạng thái `available` và KHÔNG BAO GIỜ tự được dùng lại -- lần deploy sau StatefulSet
+# tạo PVC mới, CSI cấp ổ mới trống, và bạn có 8 ổ song song, trả tiền cho 4 ổ chết.
+#
+# CƠ CHẾ: `claimRef` khai sẵn namespace+name của PVC mà StatefulSet SẼ tạo. Kubernetes coi
+# đó là chỗ đã đặt trước; khi PVC đúng tên đó xuất hiện, nó bind vào PV này thay vì gọi
+# provisioner. Tên PVC do `volumeClaimTemplates` sinh ra theo công thức
+# `<tên template>-<tên statefulset>-<số thứ tự>`, nên cố định và đoán trước được.
+#
+# ⚠️ PHẢI ÁP TRƯỚC BƯỚC 6 của playbook-deploy (áp 5 ArgoCD Application). Áp sau thì
+# StatefulSet đã tạo PVC rồi, PVC đó đã bind vào ổ mới cấp động, và PV ở đây nằm không.
+# Thứ tự đúng: StorageClass gp3 (5.0) -> file này -> ... -> Application.
+#
+# ⚠️ VOLUME ID Ở ĐÂY LÀ CỦA MỘT LẦN DESTROY CỤ THỂ (2026-08-25), KHÔNG dùng lại mù quáng
+# cho lần sau. Lấy danh sách thật rồi sửa lại 4 dòng volumeHandle:
+#   aws ec2 describe-volumes --region ap-southeast-1 --filters "Name=status,Values=available" \
+#     --query "Volumes[].{Id:VolumeId,Size:Size,AZ:AvailabilityZone,PVC:Tags[?Key=='kubernetes.io/created-for/pvc/name']|[0].Value}" --output table
+#
+# nodeAffinity theo zone là BẮT BUỘC, không phải trang trí: ổ EBS chỉ gắn được vào máy
+# cùng Availability Zone. Thiếu nó, scheduler có thể xếp pod sang node ở 1b rồi pod đứng
+# `Pending` với lỗi gắn ổ -- kiểu hỏng khó đọc vì bản thân PVC vẫn xanh.
+#
+# reclaimPolicy: Retain -- xoá PVC thì ổ vẫn còn (PV chuyển `Released`). Đây là điểm khác
+# `Delete` của StorageClass gp3: ổ tái sử dụng không nên biến mất chỉ vì một lần gỡ chart.
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: reuse-vox-postgresql-0
+spec:
+  capacity:
+    storage: 20Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: gp3
+  claimRef:
+    namespace: vox
+    name: data-vox-postgresql-0
+  csi:
+    driver: ebs.csi.aws.com
+    volumeHandle: vol-0f54179ca3e0f98a4
+    fsType: ext4
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: topology.kubernetes.io/zone
+              operator: In
+              values: ["ap-southeast-1a"]
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: reuse-kafka-controller-0
+spec:
+  capacity:
+    storage: 30Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: gp3
+  claimRef:
+    namespace: vox
+    name: data-kafka-controller-0
+  csi:
+    driver: ebs.csi.aws.com
+    volumeHandle: vol-0d436068e330e3d2a
+    fsType: ext4
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: topology.kubernetes.io/zone
+              operator: In
+              values: ["ap-southeast-1a"]
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: reuse-vox-redis-master-0
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: gp3
+  claimRef:
+    namespace: vox
+    name: redis-data-vox-redis-master-0
+  csi:
+    driver: ebs.csi.aws.com
+    volumeHandle: vol-0cfb173a4a5e4afd4
+    fsType: ext4
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: topology.kubernetes.io/zone
+              operator: In
+              values: ["ap-southeast-1a"]
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: reuse-agents-postgresql-0
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: gp3
+  claimRef:
+    namespace: vox-agents
+    name: data-agents-postgresql-0
+  csi:
+    driver: ebs.csi.aws.com
+    volumeHandle: vol-0e20fefab559e50e4
+    fsType: ext4
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: topology.kubernetes.io/zone
+              operator: In
+              values: ["ap-southeast-1a"]

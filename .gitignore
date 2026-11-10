@@ -1,0 +1,36 @@
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+tfplan*
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform variable files co the chua thong tin nhay cam (secrets, API key, domain noi bo...)
+*.tfvars
+*.tfvars.json
+
+# Cloud credentials / key
+*.pem
+*.key
+*.p12
+*.pfx
+.env
+.env.*
+kubeconfig
+kubeconfig.*
+*.credentials
+credentials.json
+secrets.yaml
+secrets.yml
+secrets.json
+
+# Editor / OS
+.DS_Store
+Thumbs.db
